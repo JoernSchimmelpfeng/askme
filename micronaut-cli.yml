@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: de.dhbw
+testFramework: spock
+sourceLanguage: kotlin
+buildTool: gradle
+features: [annotation-api, app-name, cache-ehcache, data, data-jdbc, flyway, graalvm, gradle, h2, http-client, jdbc-dbcp, jib, kotlin, kotlin-application, kotlin-extension-functions, kubernetes, log4j2, management, netty-server, openapi, properties, readme, spock]
