@@ -23,61 +23,62 @@ class UserControllerTest extends Specification {
 
     void testCreate() {
         when:
-        String requestBody = "{\"id\": \"17\", \"name\": \"somename\"}";
-        HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody);
-        String result = client.toBlocking().retrieve(createRequest);
+        String requestBody =  """{"id":"17","name":"somename"}"""
+        HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody)
+        String result = client.toBlocking().retrieve(createRequest)
 
         then:
-        result == "{\"id\":1,\"name\":\"somename\"}"
+        result == """{"id":"1","name":"somename"}"""
 
         cleanup:
-        def request = HttpRequest.DELETE("/user");
-        client.toBlocking().exchange(request);
+        def request = HttpRequest.DELETE("/user")
+        client.toBlocking().exchange(request)
+        def x = 1
     }
 
     void testGetAll() {
         when:
-        String requestBody = "{\"name\": \"somename1\"}";
-        HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody);
-        client.toBlocking().retrieve(createRequest);
-        requestBody = "{\"name\": \"somename2\"}";
-        createRequest = HttpRequest.POST("/user", requestBody);
-        client.toBlocking().retrieve(createRequest);
-        HttpRequest<User> request = HttpRequest.GET("/user");
-        String result = client.toBlocking().retrieve(request);
+        String requestBody = """{"id": "na", "name": "somename1"}"""
+        HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody)
+        client.toBlocking().retrieve(createRequest)
+        requestBody = """{"id": "na", "name": "somename2"}"""
+        createRequest = HttpRequest.POST("/user", requestBody)
+        client.toBlocking().retrieve(createRequest)
+        HttpRequest<User> request = HttpRequest.GET("/user")
+        String result = client.toBlocking().retrieve(request)
 
         then:
-        result == "[{\"id\":2,\"name\":\"somename1\"},{\"id\":3,\"name\":\"somename2\"}]"
+        result == """[{"id":"2","name":"somename1"},{"id":"3","name":"somename2"}]"""
 
         cleanup:
-        request = HttpRequest.DELETE("/user");
-        client.toBlocking().exchange(request);
+        request = HttpRequest.DELETE("/user")
+        client.toBlocking().exchange(request)
     }
 
 
     void testDelete() {
         when:
-        String requestBody = "{\"name\": \"somename1\"}";
-        HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody);
-        client.toBlocking().retrieve(createRequest);
-        requestBody = "{\"name\": \"somename2\"}";
-        createRequest = HttpRequest.POST("/user", requestBody);
-        client.toBlocking().retrieve(createRequest);
-        HttpRequest<String> request = HttpRequest.GET("/user");
-        String result = client.toBlocking().retrieve(request);
+        String requestBody = """{"id": "na", "name": "somename1"}"""
+        HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody)
+        client.toBlocking().retrieve(createRequest)
+        requestBody = """{"id": "na", "name": "somename2"}"""
+        createRequest = HttpRequest.POST("/user", requestBody)
+        client.toBlocking().retrieve(createRequest)
+        HttpRequest<String> request = HttpRequest.GET("/user")
+        String result = client.toBlocking().retrieve(request)
 
         then:
-        result == "[{\"id\":4,\"name\":\"somename1\"},{\"id\":5,\"name\":\"somename2\"}]"
+        result == """[{"id":"4","name":"somename1"},{"id":"5","name":"somename2"}]"""
 
         when:
-        request = HttpRequest.DELETE("/user/4");
-        def response = client.toBlocking().exchange(request);
+        request = HttpRequest.DELETE("/user/4")
+        def response = client.toBlocking().exchange(request)
 
-        request = HttpRequest.GET("/user");
-        result = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/user")
+        result = client.toBlocking().retrieve(request)
 
         then:
         response.getStatus().getCode() == 204
-        result == "[{\"id\":5,\"name\":\"somename2\"}]"
+        result == """[{"id":"5","name":"somename2"}]"""
     }
 }

@@ -54,7 +54,12 @@ dependencies {
 
 
 application {
-    mainClass.set("de.dhbw.askme.ApplicationKt")
+    mainClass.set("de.dhbw.askme.Application")
+}
+
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.forkOptions.jvmArgs << '-Dmicronaut.openapi.views.spec=swagger-ui.enabled=true,swagger-ui.theme=flattop'
 }
 
 java {
