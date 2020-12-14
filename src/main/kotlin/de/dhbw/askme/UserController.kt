@@ -24,6 +24,12 @@ import javax.inject.Singleton
 @Singleton
 class UserController(private val repository: UserRepository) {
 
+    @Get("/fail")
+    fun fail() {
+        throw UnsupportedOperationException()
+     //   throw IllegalAccessException()
+    }
+
     @Get("/{id}")
     fun show(id: Long): User {
         log.debug("Get user with id {}", id)

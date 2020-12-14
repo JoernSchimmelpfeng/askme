@@ -7,12 +7,14 @@ plugins {
     id("com.github.johnrengelman.shadow") version "6.1.0"
     id("io.micronaut.application") version "1.2.0"
     id("com.google.cloud.tools.jib") version "2.6.0"
+    id 'idea' // Download sources
 }
 
 version = "0.1"
 group = "de.dhbw.askme"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
 }
@@ -86,3 +88,9 @@ tasks {
     }
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}

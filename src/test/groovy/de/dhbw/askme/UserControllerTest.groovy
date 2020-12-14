@@ -2,8 +2,10 @@ package de.dhbw.askme
 
 import de.dhbw.askme.domain.User
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Specification
 
@@ -21,9 +23,19 @@ class UserControllerTest extends Specification {
     @Client('/')
     RxHttpClient client
 
+    void testExceptionHandler() {
+        when:
+        HttpRequest<String> createRequest = HttpRequest.GET("/user/fail")
+        client.toBlocking().retrieve(createRequest)
+
+        then:
+        def e = thrown(HttpClientResponseException )
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
     void testCreate() {
         when:
-        String requestBody =  """{"id":"17","name":"somename"}"""
+        String requestBody = """{"id":"17","name":"somename"}"""
         HttpRequest<String> createRequest = HttpRequest.POST("/user", requestBody)
         String result = client.toBlocking().retrieve(createRequest)
 
@@ -33,7 +45,6 @@ class UserControllerTest extends Specification {
         cleanup:
         def request = HttpRequest.DELETE("/user")
         client.toBlocking().exchange(request)
-        def x = 1
     }
 
     void testGetAll() {
