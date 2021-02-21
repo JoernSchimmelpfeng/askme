@@ -1,7 +1,8 @@
 AskMe Projekt
 
 Base project for programming courses at the DHBW. 
-Based on Micronaut and Java/Kotlin/Groovy
+Based on Micronaut and Java/Kotlin
+Unit Testing is based on the Spock test framework using Groovy.
 
 More infos
 
